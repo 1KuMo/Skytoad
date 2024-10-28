@@ -1,0 +1,186 @@
+body {
+    background-color: #212121;
+    color: #FFD54F; /* couleur du texte */
+    flex-direction: column; /* Permet d'aligner le footer en bas */
+}
+
+/* Titres principaux */
+h1 {
+    text-decoration: underline;
+    text-align: center;
+    color: #0D6F67;
+}
+
+h2 {
+    color: #A8DCA0;
+    text-decoration: underline;
+    margin-left: 100px; /* pour le mettre au centre entre l'image et la bord. gauche -> plus précis et ajustable */
+}
+
+/* Header */
+header {
+    height: 210px; /* Ajuste la hauteur pour que l'image soit plus grande et pas trop petite */
+    display: flex;
+    justify-content: center; /* Centre le contenu principal */
+    align-items: center; /* alligne les éléments */
+    position: relative; /* Nécessaire pour le positionnement absolu */
+    padding: 20px;
+    color: #FFD54F; /* Couleur du texte */
+}
+
+header::before {
+    content: "";
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('background1.jpg'); /* on donne le path vers l'img */
+    background-position: center; /* Centre l'image */
+    background-color: rgba(50, 50, 50, 1); /* Gris semi-transparent ( + on augemente la V du last, + c'est gris ) */
+    background-blend-mode: overlay; /* Mélange l'image et la couleur */
+    background-size: contain; /* Fait en sorte que l'image soit entièrement visible ( cover p/e fait juste l'encadrement ) */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    opacity: 0.4; /* Réduit la visibilité de l'image ( like filtrer ) */
+    z-index: -1; /* ( avec pos - abso ) Place l'image derrière le texte IMPORTANT */
+}
+
+.top-right-text {
+    position: absolute;
+    top: -15px;
+    right: 10px; /* Positionne le texte en haut à droite */
+}
+
+/* Centrage des éléments dans le header */
+.header-content {
+    text-align: center; /* Centre le contenu du header */
+}
+
+/* Menu de navigation */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px; /* met un espace à droite du contenu de (x)px */
+}
+
+nav ul li a {
+    color: #007FFF;
+    text-decoration: underline;
+    font-size: 25px; /* gère la taille des mots cliquables */
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    position: relative; /* S'assure que le footer est positionné par rapport à son conteneur */
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgb(2, 36, 7)); /* Dégradé de bg */
+    padding: 20px; /* Espace à l'intérieur du footer */
+    margin-bottom: -25px;
+}
+
+
+footer a {
+    color: #FFD54F;
+    text-decoration: underline;
+}
+
+/* Style pour les éléments de section */
+.highlight { /* h3 */
+    color: #E6E6FF;
+    margin-left: 40px
+}
+
+/* Images */
+.side-image1 {
+    width: 100%; /* Fait en sorte que l'image prenne la largeur totale de son conteneur */
+    max-width: 300px; /* Limite la largeur maximale de l'image pour qu'elle ne soit pas trop grande */
+    height: auto; /* Conserve les proportions de l'image */
+    margin: 10px auto; /* Centrer l'image avec un espace autour */
+    display: block; /* S'assurer qu'elle est traitée comme un bloc pour le centrage */
+    border-radius: 10px; /* Coins arrondis pour une meilleure apparence */
+}
+
+/* On met les images après les titres */
+.talismans, .skills, .dungeons {
+    position: absolute;
+    display: inline-block; /* alignement sur la même ligne */
+    width: 150px; /* Ajuste la taille souhaitée */
+    height: auto; /* Conserve les proportions pour pas que ce soit affreusement déformé  */
+    vertical-align: right; 
+    margin-top: -8px;
+    margin-left: 600px; /* pour pas que ce soit collé collé quand même */
+    opacity: 0.8;
+    z-index: -1; /* avec ça le texte en dessous n'est pas impacté par le margin */
+}
+
+/* à cause des dimensions, certaines doivent être réajustées */
+.pets, .minions, .collections {
+    position: absolute;
+    display: inline-block;
+    width: 100px; /* taille changée */
+    height: auto;
+    vertical-align: right;
+    margin-top: -12px; /* emplacement changé */
+    margin-left: 600px;
+    z-index: -1;
+}
+
+/* Style des liens de catégorie */
+.category-link {
+    color: #A8DCA0;
+    text-decoration: none; /* Enlève le soulignement */
+}
+
+.category-link:hover {
+    text-decoration: underline; /* Ajoute un soulignement au survol si tu le souhaites */
+}
+
+/* Responsivité ( en gros pour pas que ce soit bizarre sur tel (meme si je sais pas comment on accede à la page sur tel )) */
+@media (max-width: 768px) { /* Ce qui suit est appliqué seulement sur les petits écrans  */
+    /* Ajustement pour mobile */
+    .side-image {
+        width: 100%; /* Image en pleine largeur */
+        float: none; /* Image centrée */
+        margin: 0 auto;
+    }
+
+    nav ul li {
+        display: block;
+        text-align: center;
+        margin: 10px 0;
+    }
+}
+/* On adapte : disposition des éléments, taille des polices, ou en cachant des parties du contenu pour que ce soit possible à consulter sur mobile*/
+
+
+.category-box {
+    border: 2px solid #A8DCA0; /* Bordure de couleur ( super beau vert le même que le titre quoi -_- ) */
+    border-radius: 10px; /* Coins arrondis ( c'est beau )*/
+    padding: 20px; /* Espace à l'intérieur ( si c'est tout serré c'est moche ) */
+    margin: 20px; /* Espace entre les sections ( si c'est tout serré c'est moche x2 ) */
+    background-color: rgba(255, 255, 255, 0.1); /* Fond semi-transparent ( ça c'est stylé ) */
+    transition: transform 0.3s; /* Effet de survol quand on passe la souris dessus */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Ombre légère */
+}
+
+.category-box:hover {
+    transform: scale(1.05); /* Agrandissement au survol */
+}
+
+.category-title {
+    text-align: center; /* on le centre dans la boite */
+    color: #A8DCA0; /* Couleur du titre */
+}
+
+.category-image {
+    width: 100%; /* Adaptation à la largeur de la boîte */
+    height: auto; /* Conserver les proportions */
+    border-radius: 5px; /* Coins arrondis pour l'image */
+    margin: 0 auto; /* Centre l'image horizontalement */
+    display: block; /* S'assure que l'image est un bloc pour le centrage */
+}
