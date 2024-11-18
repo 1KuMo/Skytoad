@@ -6,7 +6,7 @@ My current main project is all about Hypixel Skyblock on Minecraft, a mode I abs
 
 This is purely for fun and learning experience. I’ve had some help from AI for my first steps, but I’m coding most of it myself as I improve my skills. 💻✨
 
-Feel free to suggest ideas or improvements—I'm open to feedback!
+Feel free to suggest ideas or advices—I'm open to feedback!
 You can add me on Discord: n3li0
 
 Peace! ✌️
