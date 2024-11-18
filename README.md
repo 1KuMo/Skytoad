@@ -1,6 +1,13 @@
+Hypixel Skyblock Projects 🌌
 Yo o/
-as a yound starting coder, I'm trying to do as much projects as possible because I love learning ! 
-my main project rn is about Hypixel Skyblock on minecraft, a mode I love to play.
-All here is only for fun and learning experience, for any suggestion or advices, add me on Discord ; "n3li0"
-ofc, I'm helped my AI for my first steps, but i mainly do by myself the code. 
-peace
+
+As a young and passionate coder, I’m diving into as many projects as I can because I love learning! 🚀
+My current main project is all about Hypixel Skyblock on Minecraft, a mode I absolutely love to play.
+
+This is purely for fun and learning experience. I’ve had some help from AI for my first steps, but I’m coding most of it myself as I improve my skills. 💻✨
+
+Feel free to suggest ideas or improvements—I'm open to feedback!
+You can add me on Discord: n3li0
+
+Peace! ✌️
+
