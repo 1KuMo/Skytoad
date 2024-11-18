@@ -10,4 +10,3 @@ Feel free to suggest ideas or improvements—I'm open to feedback!
 You can add me on Discord: n3li0
 
 Peace! ✌️
-
