@@ -10,3 +10,5 @@ Feel free to suggest ideas or advices—I'm open to feedback!
 You can add me on Discord: n3li0
 
 Peace! ✌️
+
+( If you wanna run correctly my mini wiki, run skytoad.html firstly ) 
