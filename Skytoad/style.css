@@ -1,0 +1,84 @@
+body {
+    background-color: #212121;
+    color: white;
+}
+
+h1 {
+    color: #0033CC;
+    text-decoration: underline;
+    margin: 35px;
+    text-align: center;
+    font-size: 50px;
+}
+
+h2 {
+    font-size: 35px;
+    color: #FF8C00;
+    text-decoration: underline;
+    margin: 20px;
+    text-align: center;
+}
+
+h3{
+    text-align: center;
+    font-size: 25px;
+}
+/* on reprend le code d'avant parce qu'il marche super */
+
+header {
+    height: 210px; /* Ajuste la hauteur pour que l'image soit plus grande et pas trop petite */
+    display: flex;
+    justify-content: center; /* Centre le contenu principal */
+    align-items: center; /* alligne les éléments */
+    position: relative; /* Nécessaire pour le positionnement absolu */
+    padding: 20px;
+    color: #FFD54F; /* Couleur du texte */
+}
+
+header::before {
+    content: "";
+    position: absolute; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('artwork.jpg'); /* on donne le path vers l'img */
+    background-position: center; /* Centre l'image */
+    background-color: rgba(50, 50, 50, 1); /* Gris semi-transparent ( + on augemente la V du last, + c'est gris ) */
+    background-blend-mode: overlay; /* Mélange l'image et la couleur */
+    background-size: cover; /* l'image couvre toute la zone */
+    background-repeat: no-repeat; /* Empêche la répétition de l'image */
+    opacity: 0.4; /* Réduit la visibilité de l'image ( like filtrer ) */
+    z-index: -1; /* ( avec pos - abso ) Place l'image derrière le texte IMPORTANT */
+}
+
+.header-content {
+    text-align: center; /* Centre le contenu du header */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px; /* met un espace à droite du contenu de (x)px */
+}
+
+nav ul li a {
+    color: #007FFF;
+    text-decoration: underline;
+    font-size: 25px; /* gère la taille des mots cliquables */
+}
+
+
+.category-box {
+    border: 2px solid #FFA500; /* Bordure de couleur ( super beau vert le même que le titre quoi -_- ) */
+    border-radius: 10px; /* Coins arrondis ( c'est beau )*/
+    padding: 30px; /* Espace à l'intérieur ( si c'est tout serré c'est moche ) */
+    margin: 50px;
+    background-color: rgba(255, 255, 255, 0.1); /* Fond semi-transparent ( ça c'est stylé ) */
+    transition: transform 0.3s; /* Effet de survol quand on passe la souris dessus */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Ombre légère */
+}
