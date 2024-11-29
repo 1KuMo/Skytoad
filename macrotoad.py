@@ -1,10 +1,10 @@
 import pyautogui
 from pynput import keyboard
-from pynput.keyboard import Key, Controller as KeyboardController  # On prend Key et Controller et on les utilise sous la variable KeyboardController
+from pynput.keyboard import Key, KeyCode, Controller as KeyboardController  # On prend Key et Controller et on les utilise sous la variable KeyboardController
 from pynput.mouse import Button, Controller as MouseController  # Idem pour MouseController
 import tkinter as tk
 import time
-import threading  # Permet d'exécuter la macro dans un thread séparé
+import threading  
 import webbrowser # Help window "skytoad GitHub"
 from PIL import ImageGrab
 
@@ -15,16 +15,15 @@ window.title("Macros")
 '''
 VARIABLES 
 '''
-# Contrôleurs souris et clavier
+# souris et clavier
 keyboard_controller = KeyboardController()
 mouse_controller = MouseController()
 
-# État de la macro
-macro_running = False  # True si la macro est active
-macro_paused = False  # True si la macro est en pause
+# état de la macro
+macro_running = False
+macro_paused = False  
 repetition = 0
 
-# Thread pour exécuter la macro
 macro_thread = None
 
 
@@ -36,61 +35,58 @@ def macro_nether_wart():
     """
     global macro_running, macro_paused, repetition
 
-    # Actions pour la macro : Clics et appuis de touches avec durée
     actions = [
-        ("key", "q", 121),  # Appuie sur 'q' pendant 121 secondes
-        ("key", "d", 121),  # Appuie sur 'd' pendant 121 secondes
-        ("key", "q", 121),  # Appuie sur 'q' pendant 121 secondes
-        ("key", "d", 121),  # Appuie sur 'd' pendant 121 secondes
-        ("key", "q", 125),  # Appuie sur 'q' pendant 121 secondes
+        ("key", "q", 121),
+        ("key", "d", 121), 
+        ("key", "q", 121),  
+        ("key", "d", 121),  
+        ("key", "q", 125),  
     ]
 
     print("Démarrage de la macro Nether Wart.")
     macro_running = True
-    was_paused = False  # Variable pour détecter les changements d'état de pause
+    was_paused = False  
 
-    mouse_controller.press(Button.left)  # Démarrage du clic gauche continu
+    mouse_controller.press(Button.left)  
 
     while macro_running:
         for action_type, key, duration in actions:
-            if not macro_running:  # Vérifie si la macro doit s'arrêter
+            if not macro_running:  
                 print("Macro arrêtée.")
                 break
 
-            # Vérifie la pause avant chaque action
             while macro_paused:
-                if not was_paused:  # Affiche une seule fois quand on passe en pause
+                if not was_paused: 
                     print("Macro en pause... (Appuyez sur F8 pour reprendre)")
                     was_paused = True
                 time.sleep(0.1)
 
-            if was_paused:  # Si la macro reprend après une pause
+            if was_paused: 
                 print("Reprise de la macro.")
                 was_paused = False
-                mouse_controller.press(Button.left)  # Reprend le clic gauche continu après la pause
+                mouse_controller.press(Button.left) 
 
-            if not macro_running:  # Double vérification pour arrêter proprement
+            if not macro_running:  
                 print("Macro arrêtée après pause.")
                 break
 
-            # Exécution des actions
-            if action_type == "key":  # Appuyer sur une touche
+            # exécution des actions
+            if action_type == "key": 
                 keyboard_controller.press(key)
 
-                # Boucle pour maintenir la touche appuyée tout en vérifiant les pauses/arrêts
                 start_time = time.time()
-                elapsed_time = 0  # Variable pour suivre le temps écoulé
-                time_spent_during_action = 0  # Temps déjà passé de l'action avant la pause
+                elapsed_time = 0  
+                time_spent_during_action = 0 
 
                 while elapsed_time < duration:
-                    if not macro_running:  # Arrêt immédiat si nécessaire
+                    if not macro_running:  
                         print("Macro arrêtée en cours d'exécution.")
                         break
 
-                    if macro_paused:  # Gestion de la pause pendant l'action
-                        keyboard_controller.release(key)  # Libère la touche en cas de pause
-                        mouse_controller.release(Button.left)  # Libère le clic gauche en pause
-                        pause_start_time = time.time()  # Moment où la pause commence
+                    if macro_paused:  
+                        keyboard_controller.release(key)  
+                        mouse_controller.release(Button.left) 
+                        pause_start_time = time.time()
 
                         while macro_paused:
                             if not was_paused:
@@ -98,91 +94,87 @@ def macro_nether_wart():
                                 was_paused = True
                             time.sleep(0.1)
 
-                        if not macro_running:  # Vérifie si la macro est arrêtée après la pause
+                        if not macro_running:  
                             print("Macro arrêtée après pause.")
                             break
 
-                        # Calculer le temps de pause
+                        # calculer le temps de pause
                         pause_duration = time.time() - pause_start_time
-                        time_spent_during_action += pause_duration  # Ajoute le temps de pause au temps écoulé
+                        time_spent_during_action += pause_duration  
 
-                        keyboard_controller.press(key)  # Reprend la pression de la touche
-                        mouse_controller.press(Button.left)  # Reprend le clic gauche
+                        keyboard_controller.press(key) 
+                        mouse_controller.press(Button.left)
                     else:
-                        elapsed_time = time.time() - start_time - time_spent_during_action  # Soustraction du temps passé en pause
+                        elapsed_time = time.time() - start_time - time_spent_during_action  # soustraction du temps passé en pause
 
-                    time.sleep(0.1)  # Petite attente pour éviter une charge CPU élevée
+                    time.sleep(0.1) 
 
                 keyboard_controller.release(key)
 
         print(f"Une répétition de la macro est terminée. Répétition {repetition} en cours.")
         repetition += 1
 
-    mouse_controller.release(Button.left)  # Arrêt du clic gauche continu
+    mouse_controller.release(Button.left)  
     macro_running = False
     print(f"Macro Nether Wart terminée. Total de répétitions : {repetition}")
     repetition = 0
 
 # MACRO PUMPKIN
-def macro_pumpkin():
+def macro_pumpkin(): # UTILISE 
     global macro_running, macro_paused, repetition
 
-    # Actions pour la macro : Clics et appuis de touches avec durée
     actions = [
-        ("key", "q", 74),          # Appuie sur 'q' pendant 74 secondes
-        ("key", "d", 74),          # Appuie sur 'd' pendant 74 secondes
-        ("key", "q", 74),          # Appuie sur 'q' pendant 74 secondes
-        ("key", "z", 2),           # Appuie sur 'z' pendant 2 secondes
+        ("key", "q", 74),          
+        ("key", "d", 74),          
+        ("key", "q", 74),          
+        ("key", "z", 2),          
     ]
 
     print("Démarrage de la macro Pumpkin.")
     macro_running = True
 
-    mouse_controller.press(Button.left)  # Démarrage du clic gauche continu
+    mouse_controller.press(Button.left)  
 
-    was_paused = False  # Variable pour détecter les changements d'état de pause
+    was_paused = False
 
     while macro_running:
         for action_type, key, duration in actions:
-            if not macro_running:  # Vérifie si la macro doit s'arrêter
+            if not macro_running:  
                 print("Macro arrêtée.")
                 break
 
-            # Vérifie la pause avant chaque action
             while macro_paused:
-                if not was_paused:  # Affiche une seule fois quand on passe en pause
+                if not was_paused:  
                     print("Macro en pause... (Appuyez sur F8 pour reprendre)")
-                    mouse_controller.release(Button.left)  # Relâche le clic pendant la pause
+                    mouse_controller.release(Button.left)  
                     was_paused = True
                 time.sleep(0.1)
 
-            if was_paused:  # Si la macro reprend après une pause
+            if was_paused:  
                 print("Reprise de la macro.")
-                mouse_controller.press(Button.left)  # Relance le clic continu
+                mouse_controller.press(Button.left)  
                 was_paused = False
 
-            if not macro_running:  # Double vérification pour arrêter proprement
+            if not macro_running: 
                 print("Macro arrêtée après pause.")
                 break
 
-            # Exécution des actions
-            if action_type == "key":  # Appuyer sur une touche
+            # exécution des actions
+            if action_type == "key": 
                 keyboard_controller.press(key)
 
-                # Boucle pour maintenir la touche appuyée tout en vérifiant les pauses/arrêts
                 start_time = time.time()
-                elapsed_time = 0  # Variable pour suivre le temps écoulé
-                time_spent_during_action = 0  # Temps déjà passé de l'action avant la pause
-
+                elapsed_time = 0
+                time_spent_during_action = 0 
                 while elapsed_time < duration:
-                    if not macro_running:  # Arrêt immédiat si nécessaire
+                    if not macro_running: 
                         print("Macro arrêtée en cours d'exécution.")
                         break
 
-                    if macro_paused:  # Gestion de la pause pendant l'action
-                        keyboard_controller.release(key)  # Libère la touche en cas de pause
-                        mouse_controller.release(Button.left)  # Libère le clic gauche en pause
-                        pause_start_time = time.time()  # Moment où la pause commence
+                    if macro_paused: 
+                        keyboard_controller.release(key) 
+                        mouse_controller.release(Button.left)  
+                        pause_start_time = time.time()
 
                         while macro_paused:
                             if not was_paused:
@@ -190,92 +182,88 @@ def macro_pumpkin():
                                 was_paused = True
                             time.sleep(0.1)
 
-                        if not macro_running:  # Vérifie l'arrêt après la pause
+                        if not macro_running: 
                             print("Macro arrêtée après pause.")
                             break
 
-                        # Calculer le temps de pause
                         pause_duration = time.time() - pause_start_time
-                        time_spent_during_action += pause_duration  # Ajoute le temps de pause au temps écoulé
+                        time_spent_during_action += pause_duration 
 
-                        keyboard_controller.press(key)  # Reprend la pression de la touche
-                        mouse_controller.press(Button.left)  # Reprend le clic gauche
+                        keyboard_controller.press(key) 
+                        mouse_controller.press(Button.left)  
                     else:
-                        elapsed_time = time.time() - start_time - time_spent_during_action  # Soustraction du temps passé en pause
+                        elapsed_time = time.time() - start_time - time_spent_during_action  
 
-                    time.sleep(0.1)  # Petite attente pour éviter une charge CPU élevée
+                    time.sleep(0.1)  
 
                 keyboard_controller.release(key)
 
         print(f"Une répétition de la macro est terminée. Répétition {repetition} en cours.")
         repetition += 1
 
-    mouse_controller.release(Button.left)  # Arrêt du clic gauche continu
+    mouse_controller.release(Button.left) 
     macro_running = False
     print(f"Macro Pumpkin terminée. {repetition}")
     repetition = 0
 
 # MACRO MELON
+# MACRO MELON
 def macro_melon():
     global macro_running, macro_paused, repetition
 
-    # Actions pour la macro : Clics et appuis de touches avec durée
     actions = [
-        ("key", "d", 73),          # Appuie sur 'd' pendant 73 secondes
-        ("key", "q", 73),          # Appuie sur 'q' pendant 73 secondes
-        ("key", "d", 73),          # Appuie sur 'd' pendant 73 secondes
-        ("key", "q", 73),          # Appuie sur 'q' pendant 73 secondes
-        ("key", "d", 73),          # Appuie sur 'd' pendant 73 secondes
+        ("key", "d", 73),
+        ("key", "q", 73),
+        ("key", "d", 73),
+        ("key", "q", 73),
+        ("key", "d", 73),
     ]
 
     print("Démarrage de la macro Melon.")
     macro_running = True
 
-    mouse_controller.press(Button.left)  # Démarrage du clic gauche continu
+    mouse_controller.press(Button.left)
 
-    was_paused = False  # Variable pour détecter les changements d'état de pause
+    was_paused = False
 
     while macro_running:
         for action_type, key, duration in actions:
-            if not macro_running:  # Vérifie si la macro doit s'arrêter
+            if not macro_running:
                 print("Macro arrêtée.")
                 break
 
-            # Vérifie la pause avant chaque action
             while macro_paused:
-                if not was_paused:  # Affiche une seule fois quand on passe en pause
+                if not was_paused:
                     print("Macro en pause... (Appuyez sur F8 pour reprendre)")
-                    mouse_controller.release(Button.left)  # Relâche le clic pendant la pause
+                    mouse_controller.release(Button.left)
                     was_paused = True
                 time.sleep(0.1)
 
-            if was_paused:  # Si la macro reprend après une pause
+            if was_paused:
                 print("Reprise de la macro.")
-                mouse_controller.press(Button.left)  # Relance le clic continu
+                mouse_controller.press(Button.left)
                 was_paused = False
 
-            if not macro_running:  # Double vérification pour arrêter proprement
+            if not macro_running:
                 print("Macro arrêtée après pause.")
                 break
 
-            # Exécution des actions
-            if action_type == "key":  # Appuyer sur une touche
+            if action_type == "key":
                 keyboard_controller.press(key)
 
-                # Boucle pour maintenir la touche appuyée tout en vérifiant les pauses/arrêts
                 start_time = time.time()
-                elapsed_time = 0  # Variable pour suivre le temps écoulé
-                time_spent_during_action = 0  # Temps déjà passé de l'action avant la pause
+                elapsed_time = 0
+                time_spent_during_action = 0
 
                 while elapsed_time < duration:
-                    if not macro_running:  # Arrêt immédiat si nécessaire
+                    if not macro_running:
                         print("Macro arrêtée en cours d'exécution.")
                         break
 
-                    if macro_paused:  # Gestion de la pause pendant l'action
-                        keyboard_controller.release(key)  # Libère la touche en cas de pause
-                        mouse_controller.release(Button.left)  # Libère le clic gauche en pause
-                        pause_start_time = time.time()  # Moment où la pause commence
+                    if macro_paused:
+                        keyboard_controller.release(key)
+                        mouse_controller.release(Button.left)
+                        pause_start_time = time.time()
 
                         while macro_paused:
                             if not was_paused:
@@ -283,27 +271,26 @@ def macro_melon():
                                 was_paused = True
                             time.sleep(0.1)
 
-                        if not macro_running:  # Vérifie l'arrêt après la pause
+                        if not macro_running:
                             print("Macro arrêtée après pause.")
                             break
 
-                        # Calculer le temps de pause
                         pause_duration = time.time() - pause_start_time
-                        time_spent_during_action += pause_duration  # Ajoute le temps de pause au temps écoulé
+                        time_spent_during_action += pause_duration
 
-                        keyboard_controller.press(key)  # Reprend la pression de la touche
-                        mouse_controller.press(Button.left)  # Reprend le clic gauche
+                        keyboard_controller.press(key)
+                        mouse_controller.press(Button.left)
                     else:
-                        elapsed_time = time.time() - start_time - time_spent_during_action  # Soustraction du temps passé en pause
+                        elapsed_time = time.time() - start_time - time_spent_during_action
 
-                    time.sleep(0.1)  # Petite attente pour éviter une charge CPU élevée
+                    time.sleep(0.1)
 
                 keyboard_controller.release(key)
 
         print(f"Une répétition de la macro est terminée. Répétition {repetition} en cours.")
         repetition += 1
 
-    mouse_controller.release(Button.left)  # Arrêt du clic gauche continu
+    mouse_controller.release(Button.left)
     macro_running = False
     print(f"Macro Melon terminée. {repetition}")
     repetition = 0
@@ -312,63 +299,58 @@ def macro_melon():
 def macro_acacia():
     global macro_running, macro_paused, repetition
 
-    # Initialisation
     was_paused = False
-    current_inventory_slot = 0  # Index de l'inventaire
-    inventory_list = [("é", '"'), ("'", "("), ("-", "è")]  # Paires d'éléments à utiliser
+    current_inventory_slot = 0
+    inventory_list = [("é", '"'), ("'", "("), ("-", "è")]
 
     print("Démarrage de la macro Acacia.")
     macro_running = True
 
     while macro_running:
-        # Sélectionne la paire courante dans l'inventaire
         element1, element2 = inventory_list[current_inventory_slot]
         print(f"Utilisation des éléments : {element1} et {element2}")
         current_inventory_slot = (current_inventory_slot + 1) % len(inventory_list)
 
-        # Actions pour la paire actuelle
         actions = [
-            ("press", element1, 0.15),  # Appuie sur le premier élément de la paire
-            ("mouse", "right", 0.75),  # Clic droit
-            ("press", element2, 0.15),  # Appuie sur le second élément de la paire
-            ("mouse", "right", 0.75),  # Clic droit
-            ("key", "&", 0.15),  # Appuie sur '&'
-            ("mouse", "left", 0.3),  # Clic gauche
-            (None, None, 0.2),  # Pause sans action
+            ("press", element1, 0.15),
+            ("mouse", "right", 0.75),
+            ("press", element2, 0.15),
+            ("mouse", "right", 0.75),
+            ("key", "&", 0.15),
+            ("mouse", "left", 0.3),
+            (None, None, 0.2),
         ]
 
         for action in actions:
-            if not macro_running:  # Vérifie si la macro doit s'arrêter
+            if not macro_running:
                 print("Macro arrêtée.")
                 break
 
-            # Pause
             while macro_paused:
                 if not was_paused:
                     print("Macro en pause... (durée en cours)")
                     was_paused = True
                 time.sleep(0.1)
 
-                if not macro_running:  # Arrêt après une pause
+                if not macro_running:
                     print("Macro arrêtée après pause.")
                     return
 
-            if was_paused:  # Reprise après pause
+            if was_paused:
                 print("Reprise de la macro.")
                 was_paused = False
 
-            # Exécution des actions
-            if action[0] == "press":  # Appuie sur un élément de l'inventaire
+            if action[0] == "press":
                 keyboard_controller.press(action[1])
                 time.sleep(action[2])
                 keyboard_controller.release(action[1])
 
-            elif action[0] == "key":  # Appuie sur une touche spécifique
+            elif action[0] == "key":
                 keyboard_controller.press(action[1])
                 time.sleep(action[2])
                 keyboard_controller.release(action[1])
 
-            elif action[0] == "mouse":  # Clic de souris (gauche/droit)
+            elif action[0] == "mouse":
                 if action[1] == "left":
                     mouse_controller.press(Button.left)
                     time.sleep(action[2])
@@ -378,7 +360,7 @@ def macro_acacia():
                     time.sleep(action[2])
                     mouse_controller.release(Button.right)
 
-            elif action[0] is None:  # Pause sans action
+            elif action[0] is None:
                 time.sleep(action[2])
 
         print(f"Une répétition de la macro est terminée. Répétition {repetition} en cours.")
@@ -388,71 +370,66 @@ def macro_acacia():
     print(f"Macro Acacia terminée. Total de répétitions : {repetition}")
     repetition = 0
 
-# MACRO DARK OAK 
+# MACRO DARK OAK
 def macro_dark_oak():
     global macro_running, macro_paused, repetition
 
-    # Initialisation
     was_paused = False
-    current_inventory_slot = 0  # Index de l'inventaire
-    inventory_list = ['"', "'", "(", "-"]  # Éléments de l'inventaire
+    current_inventory_slot = 0
+    inventory_list = ['"', "'", "(", "-"]
 
-    # Actions pour la macro
     actions = [
-        ("press", None, 0.15),  # Appuie sur un élément de l'inventaire
-        ("mouse", "right", 0.75),  # Clic droit
-        ("key", "d", 0.4),  # Appuie sur 'd'
-        ("press", None, 0.15),  # Appuie sur un autre élément de l'inventaire
-        ("mouse", "right", 0.75),  # Clic droit
-        ("key", "q", 0.5),  # Appuie sur 'q'
-        ("key", "è", 0.2),  # Appuie sur 'è'
-        ("mouse", "right", 0.75),  # Clic droit
-        ("key", "é", 0.15),  # Appuie sur 'é'
-        ("mouse", "left", 0.3),  # Clic gauche
-        (None, None, 0.2),  # Pause sans action
+        ("press", None, 0.15),
+        ("mouse", "right", 0.75),
+        ("key", "d", 0.4),
+        ("press", None, 0.15),
+        ("mouse", "right", 0.75),
+        ("key", "q", 0.5),
+        ("key", "è", 0.2),
+        ("mouse", "right", 0.75),
+        ("key", "é", 0.15),
+        ("mouse", "left", 0.3),
+        (None, None, 0.2),
     ]
 
     print("Démarrage de la macro Dark Oak.")
     macro_running = True
 
     while macro_running:
-        # Change l'élément sélectionné dans l'inventaire
         element = inventory_list[current_inventory_slot]
         print(f"Changement d'élément dans l'inventaire : {element}")
         current_inventory_slot = (current_inventory_slot + 1) % len(inventory_list)
 
         for action in actions:
-            if not macro_running:  # Vérifie si la macro doit s'arrêter
+            if not macro_running:
                 print("Macro arrêtée.")
                 break
 
-            # Pause
             while macro_paused:
                 if not was_paused:
                     print("Macro en pause... (durée en cours)")
                     was_paused = True
                 time.sleep(0.1)
 
-                if not macro_running:  # Arrêt après une pause
+                if not macro_running:
                     print("Macro arrêtée après pause.")
                     return
 
-            if was_paused:  # Reprise après pause
+            if was_paused:
                 print("Reprise de la macro.")
                 was_paused = False
 
-            # Exécution des actions
-            if action[0] == "press" and element is not None:  # Appuie sur un élément de l'inventaire
+            if action[0] == "press" and element is not None:
                 keyboard_controller.press(element)
                 time.sleep(action[2])
                 keyboard_controller.release(element)
 
-            elif action[0] == "key":  # Appuie sur une touche spécifique
+            elif action[0] == "key":
                 keyboard_controller.press(action[1])
                 time.sleep(action[2])
                 keyboard_controller.release(action[1])
 
-            elif action[0] == "mouse":  # Clic de souris (gauche/droit)
+            elif action[0] == "mouse":
                 if action[1] == "left":
                     mouse_controller.press(Button.left)
                     time.sleep(action[2])
@@ -462,7 +439,7 @@ def macro_dark_oak():
                     time.sleep(action[2])
                     mouse_controller.release(Button.right)
 
-            elif action[0] is None:  # Pause sans action
+            elif action[0] is None:
                 time.sleep(action[2])
 
         print(f"Une répétition de la macro est terminée. Répétition {repetition} en cours.")
@@ -472,76 +449,117 @@ def macro_dark_oak():
     print(f"Macro Dark Oak terminée. Total de répétitions : {repetition}")
     repetition = 0
 
-
-'''
-FISHING 
-'''
-
-# Zone de surveillance pour la couleur verte
-zone_surveillance = (760, 340, 400, 400)  # Une zone de 400x400 pixels autour du centre de l'écran
-
-# Fonction pour détecter un pixel avec une tolérance sur les couleurs
-def detecter_pixel_vert(zone, tolerance=10):
-    screenshot = pyautogui.screenshot(region=zone)  # Capture de la zone spécifiée
-    couleur_cible = (86, 255, 86)  # La couleur verte cible
-
-    for x in range(screenshot.width):
-        for y in range(screenshot.height):
-            pixel = screenshot.getpixel((x, y))
-
-            # Comparaison avec la tolérance
-            if all(abs(pixel[i] - couleur_cible[i]) <= tolerance for i in range(3)):
-                return True
-
-    return False
-
-# Fonction pour démarrer la macro de la pêche (sans pause interne)
+    # MACRO TROPHY FISHING
 def macro_trophy_fishing():
-    global macro_running, macro_paused
+    global macro_running, macro_paused, repetition
 
     actions = [
-        # Action 1: lancer la ligne (clic droit)
-        {"action": "clic_droit", "delay": 0.12},
-        # Action 2: attendre le message en vert
-        {"action": "attendre_message_vert", "delay": 0.14},  # Attendre le message sans délai max
-        # Action 3: récupérer la canne à pêche (clic droit)
-        {"action": "clic_droit", "delay": 0.14},
+        ("key", "w", 120),
+        ("key", "a", 120),
+        ("key", "s", 130),
+        ("key", "d", 100),
     ]
 
-    print("Démarrage de la macro de pêche.")
+    print("Démarrage de la macro Trophy Fishing.")
     macro_running = True
+    was_paused = False
 
     while macro_running:
-        for action in actions:
-            if action["action"] == "clic_droit":
-                pyautogui.mouseDown(button='right')  # press
-                pyautogui.mouseUp(button='right')    # release
-                time.sleep(action["delay"]) 
-            elif action["action"] == "attendre_message_vert":
-                pixel_detected = False  # Booléen pour savoir si le pixel vert est détecté
-                start_time = time.time()
-
-                while not pixel_detected:  # Tant que le pixel n'est pas détecté
-                    if detecter_pixel_vert(zone_surveillance):  # Vérification du pixel vert
-                        print("Message détecté, reprise de la canne à pêche.")
-                        pixel_detected = True  # Pixel trouvé, on arrête la recherche
-                    if macro_paused:  
-                        print("Macro en pause. Appuyez sur F8 pour reprendre.")
-                        while macro_paused:
-                            time.sleep(0.2)  # Attente active pendant la pause
-                    time.sleep(0.1)  # Petite attente pour éviter une charge CPU excessive
-
-                # On sort de la boucle dès que le pixel est détecté
-                # Pas de délai max ici, la boucle attendra indéfiniment jusqu'à détection
-                print(f"Message vert détecté après {time.time() - start_time:.2f} secondes.")
-                # La macro continue avec l'action suivante
-
-            # La macro continue sans relancer un clic droit non désiré
+        for action_type, key, duration in actions:
             if not macro_running:
+                print("Macro arrêtée.")
                 break
 
+            while macro_paused:
+                if not was_paused:
+                    print("Macro en pause... (Appuyez sur F8 pour reprendre)")
+                    was_paused = True
+                time.sleep(0.1)
+
+            if was_paused:
+                print("Reprise de la macro.")
+                was_paused = False
+
+            if not macro_running:
+                print("Macro arrêtée après pause.")
+                break
+
+            # exécution des actions
+            if action_type == "key":
+                keyboard_controller.press(key)
+
+                start_time = time.time()
+                elapsed_time = 0
+                time_spent_during_action = 0
+
+                while elapsed_time < duration:
+                    if not macro_running:
+                        print("Macro arrêtée en cours d'exécution.")
+                        break
+
+                    if macro_paused:
+                        keyboard_controller.release(key)
+                        pause_start_time = time.time()
+
+                        while macro_paused:
+                            if not was_paused:
+                                print("Macro en pause... (durée en cours)")
+                                was_paused = True
+                            time.sleep(0.1)
+
+                        if not macro_running:
+                            print("Macro arrêtée après pause.")
+                            break
+
+                        pause_duration = time.time() - pause_start_time
+                        time_spent_during_action += pause_duration
+
+                        keyboard_controller.press(key)
+                    else:
+                        elapsed_time = time.time() - start_time - time_spent_during_action
+
+                    time.sleep(0.1)
+
+                keyboard_controller.release(key)
+
+        print(f"Une répétition de la macro est terminée. Répétition {repetition} en cours.")
+        repetition += 1
+
     macro_running = False
-    print("Macro de Trophy Fishing terminée.")
+    print(f"Macro Trophy Fishing terminée. Total de répétitions : {repetition}")
+    repetition = 0
+
+
+# MACRO CLICK FARM
+def macro_click_farm():
+    global macro_running, macro_paused, repetition
+
+    print("Démarrage de la macro Click Farm.")
+    macro_running = True
+    was_paused = False
+
+    while macro_running:
+        # Effectuer un clic toutes les 0.2 secondes (simulateur de farm)
+        mouse_controller.click(Button.left)
+        time.sleep(0.2)
+
+        while macro_paused:
+            if not was_paused:
+                print("Macro en pause... (Appuyez sur F8 pour reprendre)")
+                was_paused = True
+            time.sleep(0.1)
+
+        if was_paused:
+            print("Reprise de la macro.")
+            was_paused = False
+
+        print(f"Une répétition de la macro est terminée. Répétition {repetition} en cours.")
+        repetition += 1
+
+    macro_running = False
+    print(f"Macro Click Farm terminée. Total de répétitions : {repetition}")
+    repetition = 0
+
 
 # Fonction pour démarrer une macro dans un thread séparé 
 def start_macro_thread():
@@ -586,7 +604,20 @@ def on_press(key):
             else:
                 print("F5 pressée : reprise de la macro.")
                 macro_paused = False  # Reprend la macro si elle est en pause
-
+        
+        elif hasattr(key, 'char') and key.char == 'x':  # Gestion de la macro 'x'
+            if not macro_running:  # Démarrage de la macro si elle n'est pas en cours
+                print("'x' pressée : démarrage de la macro de clic.")
+                macro_running = True
+                macro_thread = threading.Thread(target=macro_click_farm)
+                macro_thread.start()
+            else:  # Arrêt de la macro si elle est déjà en cours
+                print("'x' pressée : arrêt de la macro de clic.")
+                macro_running = False
+                if macro_thread is not None:
+                    macro_thread.join()  # Assurez-vous que le thread termine proprement
+                print("Macro de clic arrêtée.")
+                
         elif key == Key.f8:  # Met en pause ou reprend la macro
             if macro_running:  # Si la macro est en cours
                 macro_paused = not macro_paused  # Change l'état de la pause
@@ -642,6 +673,10 @@ btn_farm2.pack()
 btn_farm3_var = tk.BooleanVar()  # Variable associée à la case "Melon Macro"
 btn_farm3 = tk.Checkbutton(window, text="Melon Macro / opti farm", variable=btn_farm3_var, font=font_large)
 btn_farm3.pack()
+
+btn_click_var = tk.BooleanVar()
+btn_click = tk.Checkbutton(window, text="CLICK MACRO", variable=macro_click_farm, font=font_large)
+btn_click.pack()
 
 '''
 Foraging 
