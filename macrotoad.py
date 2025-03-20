@@ -1,25 +1,24 @@
 import pyautogui
 from pynput import keyboard
-from pynput.keyboard import Key, KeyCode, Controller as KeyboardController  # On prend Key et Controller et on les utilise sous la variable KeyboardController
-from pynput.mouse import Button, Controller as MouseController  # Idem pour MouseController
+from pynput.keyboard import Key, KeyCode, Controller as KeyboardController  # on prend Key et Controller et on les utilise sous la variable KeyboardController
+from pynput.mouse import Button, Controller as MouseController  # // pour MouseController
 import tkinter as tk
 import time
 import threading  
 import webbrowser # Help window "skytoad GitHub"
 from PIL import ImageGrab
 
-# Fenêtre principale
+# main windiow
 window = tk.Tk()
 window.title("Macros")
 
 '''
 VARIABLES 
 '''
-# souris et clavier
+
 keyboard_controller = KeyboardController()
 mouse_controller = MouseController()
 
-# état de la macro
 macro_running = False
 macro_paused = False  
 repetition = 0
@@ -29,10 +28,6 @@ macro_thread = None
 
 # MACRO NETHER WARTH
 def macro_nether_wart():
-    """
-    Exécute la macro "Nether Wart".
-    Comprend des allers-retours automatisés et gère les pauses via une touche.
-    """
     global macro_running, macro_paused, repetition
 
     actions = [
@@ -589,48 +584,46 @@ def start_macro_thread():
     # Démarre le thread
     macro_thread.start()
 
-# Gestion des touches pour pause/reprise et arrêt
-'''
-Fonction pour gérer les touches de pause, reprise, et arrêt
-'''
+# touches pour pause/reprise et arrêt
+
 def on_press(key):
     global macro_running, macro_paused, macro_thread
 
     try:
-        if key == Key.f5:  # Démarre ou reprend la macro
-            if not macro_running:  # Si la macro n'est pas déjà en cours d'exécution
+        if key == Key.f5:  # start 
+            if not macro_running:  # si c'est pas alr start
                 print("F5 pressée : démarrage de la macro.")
                 start_macro_thread()  # Démarre la macro sélectionnée
             else:
                 print("F5 pressée : reprise de la macro.")
-                macro_paused = False  # Reprend la macro si elle est en pause
+                macro_paused = False  # if paused : start back
         
-        elif hasattr(key, 'char') and key.char == 'x':  # Gestion de la macro 'x'
-            if not macro_running:  # Démarrage de la macro si elle n'est pas en cours
+        elif hasattr(key, 'char') and key.char == 'x':  # macro click maths
+            if not macro_running: 
                 print("'x' pressée : démarrage de la macro de clic.")
                 macro_running = True
                 macro_thread = threading.Thread(target=macro_click_farm)
                 macro_thread.start()
-            else:  # Arrêt de la macro si elle est déjà en cours
+            else:  # stop if running
                 print("'x' pressée : arrêt de la macro de clic.")
                 macro_running = False
                 if macro_thread is not None:
-                    macro_thread.join()  # Assurez-vous que le thread termine proprement
+                    macro_thread.join() 
                 print("Macro de clic arrêtée.")
                 
-        elif key == Key.f8:  # Met en pause ou reprend la macro
-            if macro_running:  # Si la macro est en cours
-                macro_paused = not macro_paused  # Change l'état de la pause
+        elif key == Key.f8:  # pause / start back
+            if macro_running: 
+                macro_paused = not macro_paused 
                 print("Macro en pause." if macro_paused else "Macro reprise.")
             else:
                 print("Aucune macro en cours pour mettre en pause/reprendre.")
 
-        elif key == Key.f3:  # Arrête complètement la macro
-            if macro_running:  # Si une macro est en cours
+        elif key == Key.f3:  # STOP
+            if macro_running:  
                 print("F3 pressée : arrêt complet de la macro.")
-                macro_running = False  # Arrête la macro
-                if macro_thread is not None:  # Si le thread existe, on l'arrête proprement
-                    macro_thread.join()  # Attendre que le thread termine avant de continuer
+                macro_running = False  
+                if macro_thread is not None:  
+                    macro_thread.join()
                 print("Macro arrêtée.")
             else:
                 print("Aucune macro en cours à arrêter.")
@@ -639,19 +632,17 @@ def on_press(key):
         print(f"Erreur : {e}")
 
 
-# Écouteur pour gérer les touches globales ( après la fonction on_press sinon c po cool )
+# on listen les touches ( après la fonction on_press sinon c po cool )
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
 '''
 CUSTOMISATION + BUTTONS 
 Farming 
 '''
-# Définir une police et une taille
-font_large = ("Arial", 16)  # Police Arial, taille 16
-font_title = ("Helvetica", 20, "bold")  # Police Helvetica, taille 20, en gras
+font_large = ("Arial", 16) 
+font_title = ("Helvetica", 20, "bold") 
 font_category = ("New Romance", 13)
 
-# Texte principal avec une police grande 
 title_label = tk.Label(window, text="Bienvenue dans l'interface", font=font_title) 
 title_label.pack(pady=10)
 
@@ -670,7 +661,7 @@ btn_farm2_var = tk.BooleanVar()
 btn_farm2 = tk.Checkbutton(window, text="Pumpkin Macro", variable=btn_farm2_var, font=font_large)
 btn_farm2.pack()
 
-btn_farm3_var = tk.BooleanVar()  # Variable associée à la case "Melon Macro"
+btn_farm3_var = tk.BooleanVar() 
 btn_farm3 = tk.Checkbutton(window, text="Melon Macro / opti farm", variable=btn_farm3_var, font=font_large)
 btn_farm3.pack()
 
@@ -712,14 +703,12 @@ title_category.pack()
 '''
 GUIDE 
 ''' 
-# Fonction pour ouvrir la fenêtre "Guide"
 def open_guide_window():
-    # Créer une nouvelle fenêtre
+
     window_guide = tk.Toplevel(window)
     window_guide.title("Guide")
     window_guide.minsize(500, 400)
     
-    # Contenu de la fenêtre Guide
     label = tk.Label(window_guide, text="Bienvenue dans le guide !", font=("Arial", 22))
     label.pack(pady=20)
 
@@ -729,7 +718,6 @@ def open_guide_window():
     help_label = tk.Label(window_guide, text="Afin d'utiliser correctement MacroToad, voici quelques indications :", font=("Arial", 22))
     help_label.pack(pady=20) 
 
-    # Affichage des commandes
     commands_text = """\
 Cochez premièrement la case correspondant à la macro souhaitée.
 F5 vous permettra de démarrer la macro sélectionnée.
@@ -739,7 +727,6 @@ F3 vous permettra d'arrêter la macro en cours / en pause."""
     command_category = tk.Label(window_guide, text=commands_text, font=("Arial", 18), justify="center")
     command_category.pack(pady=10)
 
-    # Informations supplémentaires
     more_help_category = tk.Label(window_guide, text="---------------------------------------------------INFORMATIONS---------------------------------------------------", font=("Arial", 14))
     more_help_category.pack()
     information_category =  tk.Label(window_guide, text="Pour plus d'informations sur MacroToad, sur le skyblock,\n ou sur l'utilisation en jeu des macros :", font=("Arial", 18), justify="center")
@@ -747,23 +734,20 @@ F3 vous permettra d'arrêter la macro en cours / en pause."""
 
     def open_link():
         webbrowser.open("https://github.com/1KuMo/Skytoad")
-    # Texte du lien
     link_label = tk.Label(
         window_guide,
         text="GitHub KuMo",
         font=("Arial", 16),
         fg="blue",
-        cursor="hand2"  # Change le curseur en main
+        cursor="hand2"  #  curseur > main
     )
     link_label.pack(pady=20)
 
-    # Associer le clic au lien
+    # click = lien 
     link_label.bind("<Button-1>", lambda e: open_link())
     
-# Créer le bouton pour ouvrir le guide
 guide_button = tk.Button(window, text="Guide", font=("Arial", 14), command=open_guide_window)
 guide_button.pack(pady=10) 
 
-# Boucle principale
 window.mainloop()
 window.minsize(400, 300)
